@@ -257,12 +257,50 @@ void ArdupilotSitlGazeboPlugin::sonar_front_callback(const sensor_msgs::Range &s
  */
 void ArdupilotSitlGazeboPlugin::publish_commandMotorSpeed()
 {
-    boost::shared_ptr<geometry_msgs::Twist> cmdMotSpd_msg = boost::make_shared<geometry_msgs::Twist>();
+    //boost::shared_ptr<geometry_msgs::Twist> cmdMotSpd_msg = boost::make_shared<geometry_msgs::Twist>();
     geometry_msgs::Twist msg;
     msg.linear.x = _cmd_motor_speed[2];
     msg.angular.z = _cmd_motor_speed[0];
 
     _motorSpd_publisher.publish(msg);
+
+    boost::shared_ptr<mav_msgs::CommandMotorSpeed> cmdMotSpd_msg = boost::make_shared<mav_msgs::CommandMotorSpeed>();
+    //auto cmdMotSpd_msg = boost::make_shared<mav_msgs::CommandMotorSpeed>();
+    
+    // The 'auto' keyword is used in some plugins with the 'boost::make_shared'.
+    // It is a recent (new) feature since 2014 in g++ compilers.
+    // It did not work with my version, so I preferred to use the old
+    // way with an explicit type declaration.
+    
+    int i;
+    std::string frame_id = "quad";
+    
+    cmdMotSpd_msg->header.frame_id = frame_id;
+    cmdMotSpd_msg->header.stamp = ros::Time::now();
+    cmdMotSpd_msg->motor_speed.clear();
+    for (i=0; i<_nbMotorSpeed; i++)
+       cmdMotSpd_msg->motor_speed.push_back(_cmd_motor_speed[i]);
+    
+    _motorSpd_publisher.publish(cmdMotSpd_msg);
+    
+    // Available display for motors commands debug
+    #ifdef DEBUG_DISP_MOTORS_COMMANDS
+        static float s_debug_cmd_motor_speed_prev[_nbMotorSpeed];
+        bool isDiffFromPrev = false;
+        
+        for (i=0; i<_nbMotorSpeed; i++) {
+            if (abs(s_debug_cmd_motor_speed_prev[i] - _cmd_motor_speed[i]) > 0.001) {
+                isDiffFromPrev = true;
+                s_debug_cmd_motor_speed_prev[i] = _cmd_motor_speed[i];
+                // Do not break, to continue updating every field
+            }
+        }
+        
+        if (isDiffFromPrev) {
+            ROS_INFO( PLUGIN_LOG_PREPEND "published motor speed: %f, %f, %f, %f", _cmd_motor_speed[0],
+                  _cmd_motor_speed[1], _cmd_motor_speed[2], _cmd_motor_speed[3]);
+        }
+    #endif // DEBUG_DISP_MOTORS_COMMANDS
 }
 
 /////////////////////////////////////////////////

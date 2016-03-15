@@ -66,6 +66,7 @@ bool ArdupilotSitlGazeboPlugin::init_gazebo_side(physics::WorldPtr world, sdf::E
 
     //**************ROVER STUFF*************
     // FROM MODEL PLUGIN CONSTRUCTOR
+    /*
     this->joints.resize(4);
 
     this->aeroLoad = 0.1;
@@ -212,7 +213,7 @@ bool ArdupilotSitlGazeboPlugin::init_gazebo_side(physics::WorldPtr world, sdf::E
     this->maxBrake = this->gasJoint->GetHighStop(0).Radian();
 
     ROS_INFO("SteeringRatio[%f] MaxGas[%f]\n", this->steeringRatio, this->maxGas);
-
+    */
     //**************ROVER STUFF*************
 
     // 'transport' is the communication library of Gazebo. It handles publishers
@@ -287,6 +288,7 @@ void ArdupilotSitlGazeboPlugin::on_gazebo_update()
         _timeMsgAlreadyDisplayed = true;
     }
 
+    /*
     // MODEL PLUGIN STUFF
 
     // Get the normalized gas and brake amount
@@ -369,6 +371,7 @@ void ArdupilotSitlGazeboPlugin::on_gazebo_update()
             this->chassis->AddForceAtWorldPosition(axis * -amt, p.pos);
         }
     }
+    */
 
 }
     
