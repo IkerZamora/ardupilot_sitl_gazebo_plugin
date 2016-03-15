@@ -1,76 +1,8 @@
 <?xml version="1.0" ?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro" name="rover">
-  <joint name="rover__gas_joint" type="prismatic">
-    <parent link="rover__chassis"/>
-    <child link="rover__gas_pedal"/>
-    <origin rpy="0  0  0" xyz="0.3  0.1  0.5"/>
-    <axis xyz="1  0  0"/>
-    <limit effort="0.0" lower="0.0" upper="0.2" velocity="0.0"/>
-  </joint>
-  <joint name="rover__brake_joint" type="prismatic">
-    <parent link="rover__chassis"/>
-    <child link="rover__brake_pedal"/>
-    <origin rpy="0  0  0" xyz="0.3   0.25  0.5"/>
-    <axis xyz="1  0  0"/>
-    <limit effort="0.0" lower="0.0" upper="0.2" velocity="0.0"/>
-  </joint>
-  <joint name="rover__steering_joint" type="revolute">
-    <parent link="rover__chassis"/>
-    <child link="rover__steering_wheel"/>
-    <origin rpy="0      1.5707  0" xyz="0.3  0.2  1"/>
-    <axis xyz="9.00000000e-05   0.00000000e+00   1.00000000e+00"/>
-    <limit effort="0.0" lower="-7.853" upper="7.853" velocity="0.0"/>
-  </joint>
-  <joint name="rover__front_left_joint" type="revolute2">
-    <parent link="rover__chassis"/>
-    <child link="rover__front_left_wheel"/>
-    <origin rpy="0      1.5707  1.5707" xyz="0.8  0.6  0.3"/>
-    <axis xyz="-1.00000000e+00   0.00000000e+00   9.00000000e-05"/>
-    <limit effort="0.0" lower="0.0" upper="0.0" velocity="0.0"/>
-  </joint>
-  <joint name="rover__front_right_joint" type="revolute2">
-    <parent link="rover__chassis"/>
-    <child link="rover__front_right_wheel"/>
-    <origin rpy="0      1.5707  1.5707" xyz="0.8 -0.6  0.3"/>
-    <axis xyz="-1.00000000e+00   0.00000000e+00   9.00000000e-05"/>
-    <limit effort="0.0" lower="0.0" upper="0.0" velocity="0.0"/>
-  </joint>
-  <joint name="rover__back_right_joint" type="revolute2">
-    <parent link="rover__chassis"/>
-    <child link="rover__back_right_wheel"/>
-    <origin rpy="0      1.5707  1.5707" xyz="-0.8 -0.6  0.3"/>
-    <axis xyz="-1.00000000e+00   0.00000000e+00   9.00000000e-05"/>
-    <limit effort="0.0" lower="0.0" upper="0.0" velocity="0.0"/>
-  </joint>
-  <joint name="rover__back_left_joint" type="revolute2">
-    <parent link="rover__chassis"/>
-    <child link="rover__back_left_wheel"/>
-    <origin rpy="0      1.5707  1.5707" xyz="-0.8  0.6  0.3"/>
-    <axis xyz="-1.00000000e+00   0.00000000e+00   9.00000000e-05"/>
-    <limit effort="0.0" lower="0.0" upper="0.0" velocity="0.0"/>
-  </joint>
-  <joint name="rover__imu_joint" type="fixed">
-    <parent link="rover__chassis"/>
-    <child link="rover__imu_link"/>
-    <origin rpy="0  0  0" xyz="0   0   0.3"/>
-    <axis xyz="0.31622  0       0.94868"/>
-    <limit effort="0.0" lower="0.0" upper="0.0" velocity="0.0"/>
-  </joint>
-  <joint name="rover__front_cam_joint" type="fixed">
-    <parent link="rover__chassis"/>
-    <child link="rover__front_cam_link"/>
-    <origin rpy="0  0  0" xyz="0   0   0.3"/>
-    <axis xyz="0.31622  0       0.94868"/>
-    <limit effort="0.0" lower="0.0" upper="0.0" velocity="0.0"/>
-  </joint>  
-  <joint name="rover__bottom_cam_joint" type="fixed">
-    <parent link="rover__chassis"/>
-    <child link="rover__front_cam_link"/>
-    <origin rpy="0  0  0" xyz="0   0   0.3"/>
-    <axis xyz="0.31622  0       0.94868"/>
-    <limit effort="0.0" lower="0.0" upper="0.0" velocity="0.0"/>
-  </joint>  
-  <link name="rover__chassis">
+  <xacro:property name="M_PI" value="3.1415926535897931" />
+
+<link name="rover__chassis">
     <inertial>
       <mass value="0"/>
       <origin rpy="0  0  0" xyz="0   0   0.3"/>
@@ -262,8 +194,80 @@
     </visual>
   </link>  
 
+  <joint name="rover__gas_joint" type="prismatic">
+    <parent link="rover__chassis"/>
+    <child link="rover__gas_pedal"/>
+    <origin rpy="0  0  0" xyz="0.3  0.1  0.5"/>
+    <axis xyz="1  0  0"/>
+    <limit effort="0.0" lower="0.0" upper="0.2" velocity="0.0"/>
+  </joint>
+  <joint name="rover__brake_joint" type="prismatic">
+    <parent link="rover__chassis"/>
+    <child link="rover__brake_pedal"/>
+    <origin rpy="0  0  0" xyz="0.3   0.25  0.5"/>
+    <axis xyz="1  0  0"/>
+    <limit effort="0.0" lower="0.0" upper="0.2" velocity="0.0"/>
+  </joint>
+  <joint name="rover__steering_joint" type="revolute">
+    <parent link="rover__chassis"/>
+    <child link="rover__steering_wheel"/>
+    <origin rpy="0      1.5707  0" xyz="0.3  0.2  1"/>
+    <axis xyz="9.00000000e-05   0.00000000e+00   1.00000000e+00"/>
+    <limit effort="0.0" lower="-7.853" upper="7.853" velocity="0.0"/>
+  </joint>
+  <joint name="rover__front_left_joint" type="revolute2">
+    <parent link="rover__chassis"/>
+    <child link="rover__front_left_wheel"/>
+    <origin rpy="0      1.5707  1.5707" xyz="0.8  0.6  0.3"/>
+    <axis xyz="-1.00000000e+00   0.00000000e+00   9.00000000e-05"/>
+    <limit effort="0.0" lower="0.0" upper="0.0" velocity="0.0"/>
+  </joint>
+  <joint name="rover__front_right_joint" type="revolute2">
+    <parent link="rover__chassis"/>
+    <child link="rover__front_right_wheel"/>
+    <origin rpy="0      1.5707  1.5707" xyz="0.8 -0.6  0.3"/>
+    <axis xyz="-1.00000000e+00   0.00000000e+00   9.00000000e-05"/>
+    <limit effort="0.0" lower="0.0" upper="0.0" velocity="0.0"/>
+  </joint>
+  <joint name="rover__back_right_joint" type="revolute2">
+    <parent link="rover__chassis"/>
+    <child link="rover__back_right_wheel"/>
+    <origin rpy="0      1.5707  1.5707" xyz="-0.8 -0.6  0.3"/>
+    <axis xyz="-1.00000000e+00   0.00000000e+00   9.00000000e-05"/>
+    <limit effort="0.0" lower="0.0" upper="0.0" velocity="0.0"/>
+  </joint>
+  <joint name="rover__back_left_joint" type="revolute2">
+    <parent link="rover__chassis"/>
+    <child link="rover__back_left_wheel"/>
+    <origin rpy="0      1.5707  1.5707" xyz="-0.8  0.6  0.3"/>
+    <axis xyz="-1.00000000e+00   0.00000000e+00   9.00000000e-05"/>
+    <limit effort="0.0" lower="0.0" upper="0.0" velocity="0.0"/>
+  </joint>
+  <joint name="rover__imu_joint" type="fixed">
+    <parent link="rover__chassis"/>
+    <child link="rover__imu_link"/>
+    <origin rpy="0  0  0" xyz="0   0   0.3"/>
+    <axis xyz="0.31622  0       0.94868"/>
+    <limit effort="0.0" lower="0.0" upper="0.0" velocity="0.0"/>
+  </joint>
+  <joint name="rover__front_cam_joint" type="fixed">
+    <parent link="rover__chassis"/>
+    <child link="rover__front_cam_link"/>
+    <origin rpy="0  0  0" xyz="0   0   0.3"/>
+    <axis xyz="0.31622  0       0.94868"/>
+    <limit effort="0.0" lower="0.0" upper="0.0" velocity="0.0"/>
+  </joint>  
+  <joint name="rover__bottom_cam_joint" type="fixed">
+    <parent link="rover__chassis"/>
+    <child link="rover__front_cam_link"/>
+    <origin rpy="0  0  0" xyz="0   0   0.3"/>
+    <axis xyz="0.31622  0       0.94868"/>
+    <limit effort="0.0" lower="0.0" upper="0.0" velocity="0.0"/>
+  </joint>  
+  
+
     <!-- Mount an IMU providing ground truth. -->
-    <xacro:imu_plugin_macro
+    <!-- <xacro:imu_plugin_macro
       namespace="rover"
       imu_suffix="gt"
       parent_link="rover__imu_link"
@@ -280,9 +284,10 @@
     >
       <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00001" iyz="0.0" izz="0.00001" />
       <origin xyz="0 0 0" rpy="0 0 0" />
-    </xacro:imu_plugin_macro>
+    </xacro:imu_plugin_macro>-->
 
     <!-- Mount a generic odometry sensor providing ground truth. -->
+     <!--
     <xacro:odometry_plugin_macro
       namespace="rover/ground_truth"
       odometry_sensor_suffix="gt"
@@ -308,13 +313,13 @@
       enable_odometry_map="false"
       odometry_map=""
       image_scale=""
-    >
-      <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00001" iyz="0.0" izz="0.00001" /> <!-- [kg.m^2] [kg.m^2] [kg.m^2] [kg.m^2] [kg.m^2] [kg.m^2] -->
-      <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
-    </xacro:odometry_plugin_macro>
+    > -->
+       <!--<inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00001" iyz="0.0" izz="0.00001" /> --><!-- [kg.m^2] [kg.m^2] [kg.m^2] [kg.m^2] [kg.m^2] [kg.m^2] -->
+       <!--<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+    </xacro:odometry_plugin_macro>-->
 
     <!-- Sonar height sensor -->
-  <xacro:include filename="$(find ardupilot_sitl_gazebo_plugin)/urdf/sensors/sonar_sensor.urdf.xacro" />
+ <!-- <xacro:include filename="$(find ardupilot_sitl_gazebo_plugin)/urdf/sensors/sonar_sensor.urdf.xacro" />
 
   <xacro:sonar_sensor
     name="sonar"
@@ -343,11 +348,11 @@
     ray_count_vertical="1"
     sensor_mesh="lidar_lite_v2_withRay/meshes/lidar_lite_v2_withRay.dae">
     <origin xyz="0.13 0.0 0.02" rpy="0 0 0"/>
-  </xacro:lidar_sensor>
+  </xacro:lidar_sensor>-->
 
 
   <!-- Downward facing camera -->
-  <xacro:include filename="$(find ardupilot_sitl_gazebo_plugin)/urdf/sensors/generic_camera.urdf.xacro" />
+  <!--<xacro:include filename="$(find ardupilot_sitl_gazebo_plugin)/urdf/sensors/generic_camera.urdf.xacro" />
   <xacro:generic_camera
     name="rover/bottom"
     parent="rover__bottom_cam_link"
@@ -360,10 +365,10 @@
     hfov="81"
     framename="rover_bottomcam">
     <origin xyz="0.14 0.0 -0.02" rpy="0 ${M_PI/2} 0"/>
-  </xacro:generic_camera>  
+  </xacro:generic_camera>  -->
 
   <!-- Front facing camera -->
-  <xacro:include filename="$(find ardupilot_sitl_gazebo_plugin)/urdf/sensors/generic_camera.urdf.xacro" />
+  <!--<xacro:include filename="$(find ardupilot_sitl_gazebo_plugin)/urdf/sensors/generic_camera.urdf.xacro" />
   <xacro:generic_camera
     name="rover/front"
     parent="rover__front_cam_link"
@@ -376,7 +381,7 @@
     hfov="81"
     framename="rover_frontcam">
     <origin xyz="0.17 0.0 0.0" rpy="0 0 0"/>
-  </xacro:generic_camera>  
+  </xacro:generic_camera>  -->
 
 
 </robot>
