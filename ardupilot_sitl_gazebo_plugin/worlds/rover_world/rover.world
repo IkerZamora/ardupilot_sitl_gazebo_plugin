@@ -109,7 +109,6 @@
     <!-- TODO: TRANSFORM IT INTO A VARIABLE DEFINED IN THE .launch FILE
          OR ELSE WE WILL ALWAYS FORGET IT IS HERE !!! -->
 
-
     <plugin name="ardupilot_sitl_gazebo_plugin" filename="libardupilot_sitl_gazebo_plugin.so">
       <UAV_MODEL>rover</UAV_MODEL>
       <front_left>rover::front_left_joint</front_left>
