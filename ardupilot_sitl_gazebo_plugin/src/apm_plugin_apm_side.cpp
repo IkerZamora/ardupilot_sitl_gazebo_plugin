@@ -114,6 +114,8 @@ bool ArdupilotSitlGazeboPlugin::receive_apm_input()
     }
 
     szRecv = _sock_control_from_ardu->recv(&pkt, sizeof(pkt), 100);
+    //ROS_INFO("recv = %d", szRecv);
+
     // Expects a servo control packet
     if (szRecv != sizeof(servo_packet)) {
         return false;

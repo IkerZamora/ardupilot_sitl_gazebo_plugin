@@ -257,13 +257,6 @@ void ArdupilotSitlGazeboPlugin::sonar_front_callback(const sensor_msgs::Range &s
  */
 void ArdupilotSitlGazeboPlugin::publish_commandMotorSpeed()
 {
-    //boost::shared_ptr<geometry_msgs::Twist> cmdMotSpd_msg = boost::make_shared<geometry_msgs::Twist>();
-    geometry_msgs::Twist msg;
-    msg.linear.x = _cmd_motor_speed[2];
-    msg.angular.z = _cmd_motor_speed[0];
-
-    _motorSpd_publisher.publish(msg);
-
     boost::shared_ptr<mav_msgs::CommandMotorSpeed> cmdMotSpd_msg = boost::make_shared<mav_msgs::CommandMotorSpeed>();
     //auto cmdMotSpd_msg = boost::make_shared<mav_msgs::CommandMotorSpeed>();
     
@@ -304,10 +297,16 @@ void ArdupilotSitlGazeboPlugin::publish_commandMotorSpeed()
 }
 
 /////////////////////////////////////////////////
-void ArdupilotSitlGazeboPlugin::OnVelMsg(const geometry_msgs::Twist vel_cmd)
+void ArdupilotSitlGazeboPlugin::OnVelMsg(const mav_msgs::CommandMotorSpeed msg)
 {
-  this->gasJoint->SetVelocity(0, vel_cmd.linear.x);
-  this->steeringJoint->SetPosition(0, vel_cmd.angular.x);
+    double yaw = msg.motor_speed[0];
+    double throttle = msg.motor_speed[2];
+
+    this->frWheelSteeringJoint->SetForce(0, yaw);
+    this->flWheelSteeringJoint->SetForce(0, yaw);
+
+    this->blWheelJoint->SetForce(0, throttle);
+    this->brWheelJoint->SetForce(0, throttle);
 }
 
 } // end of "namespace gazebo"

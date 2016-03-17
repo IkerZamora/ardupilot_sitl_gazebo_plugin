@@ -150,7 +150,8 @@ class ArdupilotSitlGazeboPlugin : public WorldPlugin
     // GAZEBO related methods ------------------
     void on_gazebo_update();
     void on_gazebo_control(ConstWorldControlPtr &_msg);
-    //void on_gazebo_modelInfo(ConstModelPtr &_msg);
+    void on_rover_model_loaded();
+    void on_gazebo_modelInfo(ConstModelPtr &_msg);
   
     // ROS related methods ---------------------
     void imu_callback(const sensor_msgs::Imu &imu_msg);
@@ -222,8 +223,8 @@ class ArdupilotSitlGazeboPlugin : public WorldPlugin
     void on_parachute_model_loaded();
     
     void OnUpdate();
-    void OnVelMsg(const geometry_msgs::Twist vel_cmd);
-    
+    void OnVelMsg(const mav_msgs::CommandMotorSpeed msg);
+    double get_collision_radius(physics::CollisionPtr _collision);
     
     // ROS related methods ---------------------
     void quat_to_euler(float q1, float q2, float q3, float q4,
@@ -233,29 +234,53 @@ class ArdupilotSitlGazeboPlugin : public WorldPlugin
     // Connection data
     std::vector<event::ConnectionPtr> connections;
 
-    // Rover data
-
+    // Rover
     physics::ModelPtr _rover_model;
-    physics::LinkPtr chassis;
-    std::vector<physics::JointPtr> joints;
-    physics::JointPtr gasJoint, brakeJoint;
-    physics::JointPtr steeringJoint;
 
-    math::Vector3 velocity;     
-    ros::Subscriber velSub;     
-    double frontPower, rearPower;       
-    double maxSpeed;        
-    double wheelRadius;     
-    double steeringRatio;       
-    double tireAngleRange;      
-    double maxGas, maxBrake;        
-    double aeroLoad;        
-    double swayForce;       
-    //physics::LinkPtr chassis;     
-    //std::vector<physics::JointPtr> joints;        
-    //physics::JointPtr gasJoint, brakeJoint;       
-    //physics::JointPtr steeringJoint;
+    // Rover Joints
+    physics::JointPtr flWheelJoint;
+    physics::JointPtr frWheelJoint;
+    physics::JointPtr blWheelJoint;
+    physics::JointPtr brWheelJoint;
+    physics::JointPtr flWheelSteeringJoint;
+    physics::JointPtr frWheelSteeringJoint;
 
+    // Rover SDF parameters
+    double frontTorque;
+    double backTorque;
+    double frontBrakeTorque;
+    double backBrakeTorque;
+    double tireAngleRange;
+    double maxSpeed;
+    double maxSteer;
+    double aeroLoad;
+
+    double steeringRatio;
+    double steeredWheelForce;
+
+    // Time of last update, used to detect resets
+    common::Time lastTime;
+
+    /// joint information from model
+    double wheelRadius;
+    double flWheelRadius;
+    double frWheelRadius;
+    double blWheelRadius;
+    double brWheelRadius;
+    double wheelbaseLength;
+    double frontTrackWidth;
+    double backTrackWidth;
+
+
+    /// state of vehicle
+    double flSteeringState;
+    double frSteeringState;
+    double flWheelState;
+    double frWheelState;
+    double blWheelState;
+    double brWheelState;
+
+    // Transport node for the rover
     transport::NodePtr node;
 
     // Node Handles
@@ -285,7 +310,8 @@ class ArdupilotSitlGazeboPlugin : public WorldPlugin
     ros::Subscriber             _sonar_front_subscriber;
     ros::Subscriber             _gps_subscriber;
     ros::Subscriber             _gps_velocity_subscriber;
-    
+    ros::Subscriber             velSub;
+
     ros::Publisher              _motorSpd_publisher;
         
     float                       _cmd_motor_speed[NB_SERVOS_MOTOR_SPEED];    // Local copy of the motor speed command, in [rad/s]
