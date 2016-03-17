@@ -1,0 +1,387 @@
+<?xml version="1.0" ?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="rover">
+  <xacro:property name="M_PI" value="3.1415926535897931" />
+
+<link name="rover__chassis">
+    <inertial>
+      <mass value="0"/>
+      <origin rpy="0  0  0" xyz="0   0   0.3"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+    <collision name="rover__collision">
+      <origin rpy="0  0  0" xyz="0   0   0.3"/>
+      <geometry>
+        <box size="2.0 1.0 0.2"/>
+      </geometry>
+    </collision>
+    <visual name="rover__visual">
+      <origin rpy="0  0  0" xyz="0   0   0.3"/>
+      <geometry>
+        <box size="2.0 1.0 0.2"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="rover__front_left_wheel">
+    <inertial>
+      <mass value="0"/>
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+    <collision name="rover__collision">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+        <cylinder length="0.1" radius="0.3"/>
+      </geometry>
+    </collision>
+    <visual name="rover__visual">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+        <cylinder length="0.1" radius="0.3"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="rover__front_right_wheel">
+    <inertial>
+      <mass value="0"/>
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+    <collision name="rover__collision">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+        <cylinder length="0.1" radius="0.3"/>
+      </geometry>
+    </collision>
+    <visual name="rover__visual">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+        <cylinder length="0.1" radius="0.3"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="rover__back_right_wheel">
+    <inertial>
+      <mass value="0"/>
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+    <collision name="rover__collision">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+        <cylinder length="0.1" radius="0.3"/>
+      </geometry>
+    </collision>
+    <visual name="rover__visual">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+        <cylinder length="0.1" radius="0.3"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="rover__back_left_wheel">
+    <inertial>
+      <mass value="0"/>
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+    <collision name="rover__collision">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+        <cylinder length="0.1" radius="0.3"/>
+      </geometry>
+    </collision>
+    <visual name="rover__visual">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+        <cylinder length="0.1" radius="0.3"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="rover__gas_pedal">
+    <inertial>
+      <mass value="0"/>
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+    <collision name="rover__collision">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+        <box size="0.1 0.1 0.1"/>
+      </geometry>
+    </collision>
+    <visual name="rover__visual">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+        <box size="0.1 0.1 0.1"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="rover__brake_pedal">
+    <inertial>
+      <mass value="0"/>
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+    <collision name="rover__collision">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+        <box size="0.1 0.1 0.1"/>
+      </geometry>
+    </collision>
+    <visual name="rover__visual">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+        <box size="0.1 0.1 0.1"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="rover__steering_wheel">
+    <inertial>
+      <mass value="0"/>
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+    <collision name="rover__collision">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+        <cylinder length="0.01" radius="0.1"/>
+      </geometry>
+    </collision>
+    <visual name="rover__visual">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+        <cylinder length="0.01" radius="0.1"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="rover__imu_link">
+    <inertial>
+      <mass value="0"/>
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+    <visual name="rover__visual">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+        <box size="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="rover__front_cam_link">
+    <inertial>
+      <mass value="0"/>
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+    <visual name="rover__visual">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+        <box size="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+  </link>
+  <link name="rover__bottom_cam_link">
+    <inertial>
+      <mass value="0"/>
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <inertia ixx="0" ixy="0" ixz="0" iyy="0" iyz="0" izz="0"/>
+    </inertial>
+    <visual name="rover__visual">
+      <origin rpy="0  0  0" xyz="0  0  0"/>
+      <geometry>
+        <box size="0.01 0.01 0.01"/>
+      </geometry>
+    </visual>
+  </link>  
+
+  <joint name="rover__gas_joint" type="prismatic">
+    <parent link="rover__chassis"/>
+    <child link="rover__gas_pedal"/>
+    <origin rpy="0  0  0" xyz="0.3  0.1  0.5"/>
+    <axis xyz="1  0  0"/>
+    <limit effort="0.0" lower="0.0" upper="0.2" velocity="0.0"/>
+  </joint>
+  <joint name="rover__brake_joint" type="prismatic">
+    <parent link="rover__chassis"/>
+    <child link="rover__brake_pedal"/>
+    <origin rpy="0  0  0" xyz="0.3   0.25  0.5"/>
+    <axis xyz="1  0  0"/>
+    <limit effort="0.0" lower="0.0" upper="0.2" velocity="0.0"/>
+  </joint>
+  <joint name="rover__steering_joint" type="revolute">
+    <parent link="rover__chassis"/>
+    <child link="rover__steering_wheel"/>
+    <origin rpy="0      1.5707  0" xyz="0.3  0.2  1"/>
+    <axis xyz="9.00000000e-05   0.00000000e+00   1.00000000e+00"/>
+    <limit effort="0.0" lower="-7.853" upper="7.853" velocity="0.0"/>
+  </joint>
+  <joint name="rover__front_left_joint" type="revolute2">
+    <parent link="rover__chassis"/>
+    <child link="rover__front_left_wheel"/>
+    <origin rpy="0      1.5707  1.5707" xyz="0.8  0.6  0.3"/>
+    <axis xyz="-1.00000000e+00   0.00000000e+00   9.00000000e-05"/>
+    <limit effort="0.0" lower="0.0" upper="0.0" velocity="0.0"/>
+  </joint>
+  <joint name="rover__front_right_joint" type="revolute2">
+    <parent link="rover__chassis"/>
+    <child link="rover__front_right_wheel"/>
+    <origin rpy="0      1.5707  1.5707" xyz="0.8 -0.6  0.3"/>
+    <axis xyz="-1.00000000e+00   0.00000000e+00   9.00000000e-05"/>
+    <limit effort="0.0" lower="0.0" upper="0.0" velocity="0.0"/>
+  </joint>
+  <joint name="rover__back_right_joint" type="revolute2">
+    <parent link="rover__chassis"/>
+    <child link="rover__back_right_wheel"/>
+    <origin rpy="0      1.5707  1.5707" xyz="-0.8 -0.6  0.3"/>
+    <axis xyz="-1.00000000e+00   0.00000000e+00   9.00000000e-05"/>
+    <limit effort="0.0" lower="0.0" upper="0.0" velocity="0.0"/>
+  </joint>
+  <joint name="rover__back_left_joint" type="revolute2">
+    <parent link="rover__chassis"/>
+    <child link="rover__back_left_wheel"/>
+    <origin rpy="0      1.5707  1.5707" xyz="-0.8  0.6  0.3"/>
+    <axis xyz="-1.00000000e+00   0.00000000e+00   9.00000000e-05"/>
+    <limit effort="0.0" lower="0.0" upper="0.0" velocity="0.0"/>
+  </joint>
+  <joint name="rover__imu_joint" type="fixed">
+    <parent link="rover__chassis"/>
+    <child link="rover__imu_link"/>
+    <origin rpy="0  0  0" xyz="0   0   0.3"/>
+    <axis xyz="0.31622  0       0.94868"/>
+    <limit effort="0.0" lower="0.0" upper="0.0" velocity="0.0"/>
+  </joint>
+  <joint name="rover__front_cam_joint" type="fixed">
+    <parent link="rover__chassis"/>
+    <child link="rover__front_cam_link"/>
+    <origin rpy="0  0  0" xyz="0   0   0.3"/>
+    <axis xyz="0.31622  0       0.94868"/>
+    <limit effort="0.0" lower="0.0" upper="0.0" velocity="0.0"/>
+  </joint>  
+  <joint name="rover__bottom_cam_joint" type="fixed">
+    <parent link="rover__chassis"/>
+    <child link="rover__front_cam_link"/>
+    <origin rpy="0  0  0" xyz="0   0   0.3"/>
+    <axis xyz="0.31622  0       0.94868"/>
+    <limit effort="0.0" lower="0.0" upper="0.0" velocity="0.0"/>
+  </joint>  
+  
+
+    <!-- Mount an IMU providing ground truth. -->
+    <!-- <xacro:imu_plugin_macro
+      namespace="rover"
+      imu_suffix="gt"
+      parent_link="rover__imu_link"
+      imu_topic="ground_truth/imu"
+      mass_imu_sensor="0.00001"
+      gyroscope_noise_density="0.0"
+      gyroscopoe_random_walk="0.0"
+      gyroscope_bias_correlation_time="1000.0"
+      gyroscope_turn_on_bias_sigma="0.0"
+      accelerometer_noise_density="0.0"
+      accelerometer_random_walk="0.0"
+      accelerometer_bias_correlation_time="300.0"
+      accelerometer_turn_on_bias_sigma="0.0"
+    >
+      <inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00001" iyz="0.0" izz="0.00001" />
+      <origin xyz="0 0 0" rpy="0 0 0" />
+    </xacro:imu_plugin_macro>-->
+
+    <!-- Mount a generic odometry sensor providing ground truth. -->
+     <!--
+    <xacro:odometry_plugin_macro
+      namespace="rover/ground_truth"
+      odometry_sensor_suffix="gt"
+      parent_link="rover__imu_link"
+      pose_topic="pose"
+      pose_with_covariance_topic="pose_with_covariance"
+      position_topic="position"
+      transform_topic="transform"
+      odometry_topic="odometry"
+      parent_frame_id="world"
+      mass_odometry_sensor="0.00001"
+      measurement_divisor="1"
+      measurement_delay="0"
+      unknown_delay="0.0"
+      noise_normal_position="0 0 0"
+      noise_normal_quaternion="0 0 0"
+      noise_normal_linear_velocity="0 0 0"
+      noise_normal_angular_velocity="0 0 0"
+      noise_uniform_position="0 0 0"
+      noise_uniform_quaternion="0 0 0"
+      noise_uniform_linear_velocity="0 0 0"
+      noise_uniform_angular_velocity="0 0 0"
+      enable_odometry_map="false"
+      odometry_map=""
+      image_scale=""
+    > -->
+       <!--<inertia ixx="0.00001" ixy="0.0" ixz="0.0" iyy="0.00001" iyz="0.0" izz="0.00001" /> --><!-- [kg.m^2] [kg.m^2] [kg.m^2] [kg.m^2] [kg.m^2] [kg.m^2] -->
+       <!--<origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+    </xacro:odometry_plugin_macro>-->
+
+    <!-- Sonar height sensor -->
+ <!-- <xacro:include filename="$(find ardupilot_sitl_gazebo_plugin)/urdf/sensors/sonar_sensor.urdf.xacro" />
+
+  <xacro:sonar_sensor
+    name="sonar"
+    parent="rover__imu_link"
+    ros_topic="sonar_down"
+    update_rate="10"
+    min_range="0.01"
+    max_range="50.0"
+    field_of_view="${1*M_PI/180}"
+    ray_count="1"
+    sensor_mesh="lidar_lite_v2/meshes/lidar_lite_v2.dae">
+    <origin xyz="0.12 0.0 0.0" rpy="0 ${90*M_PI/180} 0"/>
+  </xacro:sonar_sensor>
+
+  <xacro:include filename="$(find ardupilot_sitl_gazebo_plugin)/urdf/sensors/lidar_sensor.urdf.xacro" />
+   <xacro:lidar_sensor
+    name="sonar2"
+    parent="rover__imu_link"
+    ros_topic="sonar_front"
+    update_rate="10"
+    min_range="0.01"
+    max_range="10.0"
+    field_of_view_horizontal="${70*M_PI/180}"
+    field_of_view_vertical="${1*M_PI/180}"
+    ray_count_horizontal="140"
+    ray_count_vertical="1"
+    sensor_mesh="lidar_lite_v2_withRay/meshes/lidar_lite_v2_withRay.dae">
+    <origin xyz="0.13 0.0 0.02" rpy="0 0 0"/>
+  </xacro:lidar_sensor>-->
+
+
+  <!-- Downward facing camera -->
+  <!--<xacro:include filename="$(find ardupilot_sitl_gazebo_plugin)/urdf/sensors/generic_camera.urdf.xacro" />
+  <xacro:generic_camera
+    name="rover/bottom"
+    parent="rover__bottom_cam_link"
+    ros_topic="image_raw"
+    cam_info_topic="camera_info"
+    update_rate="60"
+    res_x="640"
+    res_y="360"
+    image_format="R8G8B8"
+    hfov="81"
+    framename="rover_bottomcam">
+    <origin xyz="0.14 0.0 -0.02" rpy="0 ${M_PI/2} 0"/>
+  </xacro:generic_camera>  -->
+
+  <!-- Front facing camera -->
+  <!--<xacro:include filename="$(find ardupilot_sitl_gazebo_plugin)/urdf/sensors/generic_camera.urdf.xacro" />
+  <xacro:generic_camera
+    name="rover/front"
+    parent="rover__front_cam_link"
+    ros_topic="image_front_raw"
+    cam_info_topic="camera_front_info"
+    update_rate="25"
+    res_x="640"
+    res_y="360"
+    image_format="R8G8B8"
+    hfov="81"
+    framename="rover_frontcam">
+    <origin xyz="0.17 0.0 0.0" rpy="0 0 0"/>
+  </xacro:generic_camera>  -->
+
+
+</robot>
