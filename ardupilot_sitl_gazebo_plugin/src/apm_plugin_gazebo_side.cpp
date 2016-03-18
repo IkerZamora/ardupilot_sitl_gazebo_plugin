@@ -30,6 +30,12 @@
 
 #include "../include/ardupilot_sitl_gazebo_plugin/ardupilot_sitl_gazebo_plugin.h"
 
+#define STEERING_RANGE 1.5454
+#define YAW_RANGE 800
+#define STEERING_RATIO (STEERING_RANGE / YAW_RANGE)
+#define FRONT_TRACK_WIDTH 1.430996
+#define WHEEL_BASE_LENGTH 0.28
+
 namespace gazebo
 {
 
@@ -335,36 +341,17 @@ void ArdupilotSitlGazeboPlugin::on_gazebo_modelInfo(ConstModelPtr &_msg)
 }
 /////////////////////////////////////////////////
 void ArdupilotSitlGazeboPlugin::OnVelMsg(const mav_msgs::CommandMotorSpeed msg)
-{
-    double yaw = msg.motor_speed[0] / 66.66;
-    double throttle = msg.motor_speed[2];
-
-   // ROS_INFO("Yaw = %f | Throttle = %f", yaw, throttle);
-/*
-    gazebo_msgs::ApplyJointEffort r;
-    ros::ServiceClient client = _rosnode->serviceClient<gazebo_msgs::ApplyJointEffort>("/gazebo/apply_joint_effort"); 
-    
-    r.request.joint_name = "rover/front_right_steering_joint";
-    r.request.effort = float(yaw);
-    client.call(r);
-
-    r.request.joint_name = "rover/front_left_steering_joint";
-    r.request.effort = float(yaw);
-    client.call(r);
-
-    r.request.joint_name = "rover/rear_left_wheel_joint";
-    r.request.effort = float(throttle);
-    client.call(r);
-
-    r.request.joint_name = "rover/rear_right_wheel_joint";
-    r.request.effort = float(throttle);
-    client.call(r);
-*/
-
-    
+{   
     if (roverSpawn){
+        //Normalize values
+        double yaw = (msg.motor_speed[0] - 500) * 0.7727 / 400;
+        double throttle = (msg.motor_speed[2] - 500) / 80;
+
         this->frWheelSteeringJoint->SetPosition(0, yaw);
         this->flWheelSteeringJoint->SetPosition(0, yaw);
+
+        this->flWheelJoint->SetVelocity(0, throttle);
+        this->frWheelJoint->SetVelocity(0, throttle);
         this->blWheelJoint->SetVelocity(0, throttle);
         this->brWheelJoint->SetVelocity(0, throttle);
     }    

@@ -125,9 +125,8 @@ bool ArdupilotSitlGazeboPlugin::receive_apm_input()
     int i;
     //bool areAllRotorsOff = true;
 
-    // Convert from values from 0 to 1, to values from -50 to 50
     for (i=0; i<NB_SERVOS_MOTOR_SPEED; i++) {
-        _cmd_motor_speed[i] = 100.0 * (pkt.servos[i] - 0.5);
+         _cmd_motor_speed[i] = pkt.servos[i] * 1000.0;
     }
 
     // When all rotors are off, makes them turn at a very slow pace
