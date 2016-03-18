@@ -344,8 +344,8 @@ void ArdupilotSitlGazeboPlugin::OnVelMsg(const mav_msgs::CommandMotorSpeed msg)
 {   
     if (roverSpawn){
         //Normalize values
-        double yaw = (msg.motor_speed[0] - 500) * 0.7727 / 400;
-        double throttle = (msg.motor_speed[2] - 500) / 80;
+        double yaw = (msg.motor_speed[0] - 500.0) * 0.7727 / 400.0;
+        double throttle = (msg.motor_speed[2] - 500.0) / 80.0;
 
         this->frWheelSteeringJoint->SetPosition(0, yaw);
         this->flWheelSteeringJoint->SetPosition(0, yaw);
