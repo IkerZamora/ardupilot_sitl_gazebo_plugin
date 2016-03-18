@@ -295,18 +295,4 @@ void ArdupilotSitlGazeboPlugin::publish_commandMotorSpeed()
         }
     #endif // DEBUG_DISP_MOTORS_COMMANDS
 }
-
-/////////////////////////////////////////////////
-void ArdupilotSitlGazeboPlugin::OnVelMsg(const mav_msgs::CommandMotorSpeed msg)
-{
-    double yaw = msg.motor_speed[0];
-    double throttle = msg.motor_speed[2];
-
-    this->frWheelSteeringJoint->SetForce(0, yaw);
-    this->flWheelSteeringJoint->SetForce(0, yaw);
-
-    this->blWheelJoint->SetForce(0, throttle);
-    this->brWheelJoint->SetForce(0, throttle);
-}
-
 } // end of "namespace gazebo"

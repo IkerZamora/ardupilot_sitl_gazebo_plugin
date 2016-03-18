@@ -43,6 +43,7 @@ namespace gazebo
  */
 bool ArdupilotSitlGazeboPlugin::init_gazebo_side(physics::WorldPtr world, sdf::ElementPtr sdf)
 {
+    roverSpawn = false;
     // Saves pointers to the parent world
     _parent_world = world;
     _sdf = sdf;
@@ -88,14 +89,18 @@ bool ArdupilotSitlGazeboPlugin::init_gazebo_side(physics::WorldPtr world, sdf::E
     
     _modelInfoSub = node->Subscribe("~/model/info", &ArdupilotSitlGazeboPlugin::on_gazebo_modelInfo, this);
     
+    std::string topicNameBuf = std::string("/") + _modelName + "/command/motor_speed";
+    this->velSub = _rosnode->subscribe(topicNameBuf.c_str(), 100, &ArdupilotSitlGazeboPlugin::OnVelMsg, this);
     //this->newFrameConnection = this->camera->ConnectNewImageFrame(
     //  boost::bind(&CameraPlugin::OnNewFrame, this, _1, _2, _3, _4, _5));
 
     _updateConnection = event::Events::ConnectWorldUpdateEnd(
           boost::bind(&ArdupilotSitlGazeboPlugin::on_gazebo_update, this));
+
     // Or we could also use 'ConnectWorldUpdateBegin'
     // For a list of all available connection events, see: Gazebo-X.X/gazebo/common/Events.hh 
-    
+
+    ROS_INFO("Gazebo side initialized");
     return true;
 }
 
@@ -215,8 +220,6 @@ void ArdupilotSitlGazeboPlugin::on_rover_model_loaded(){
     if (!this->flWheelJoint)
         gzthrow("could not find front left wheel joint\n");
 
-    ROS_INFO("Front left joint found");
-
     this->frWheelJoint = _rover_model->GetJoint("front_right_wheel_joint");
     if (!this->frWheelJoint)
         gzthrow("could not find front right wheel joint\n");
@@ -311,8 +314,6 @@ void ArdupilotSitlGazeboPlugin::on_rover_model_loaded(){
                       this->blWheelJoint->GetChild()->GetCollision(id));
     this->brWheelRadius = ArdupilotSitlGazeboPlugin::get_collision_radius(
                       this->brWheelJoint->GetChild()->GetCollision(id));
-
-
 }
 
 /*
@@ -328,8 +329,46 @@ void ArdupilotSitlGazeboPlugin::on_gazebo_modelInfo(ConstModelPtr &_msg)
     
     if (!_msg->name().compare("rover")) {
         ROS_INFO("There is Rover !");
+        roverSpawn = true;
         on_rover_model_loaded();
     }
 }
+/////////////////////////////////////////////////
+void ArdupilotSitlGazeboPlugin::OnVelMsg(const mav_msgs::CommandMotorSpeed msg)
+{
+    double yaw = msg.motor_speed[0] / 66.66;
+    double throttle = msg.motor_speed[2];
+
+   // ROS_INFO("Yaw = %f | Throttle = %f", yaw, throttle);
+/*
+    gazebo_msgs::ApplyJointEffort r;
+    ros::ServiceClient client = _rosnode->serviceClient<gazebo_msgs::ApplyJointEffort>("/gazebo/apply_joint_effort"); 
+    
+    r.request.joint_name = "rover/front_right_steering_joint";
+    r.request.effort = float(yaw);
+    client.call(r);
+
+    r.request.joint_name = "rover/front_left_steering_joint";
+    r.request.effort = float(yaw);
+    client.call(r);
+
+    r.request.joint_name = "rover/rear_left_wheel_joint";
+    r.request.effort = float(throttle);
+    client.call(r);
+
+    r.request.joint_name = "rover/rear_right_wheel_joint";
+    r.request.effort = float(throttle);
+    client.call(r);
+*/
+
+    
+    if (roverSpawn){
+        this->frWheelSteeringJoint->SetPosition(0, yaw);
+        this->flWheelSteeringJoint->SetPosition(0, yaw);
+        this->blWheelJoint->SetVelocity(0, throttle);
+        this->brWheelJoint->SetVelocity(0, throttle);
+    }    
+}
+
 
 } // end of "namespace gazebo"

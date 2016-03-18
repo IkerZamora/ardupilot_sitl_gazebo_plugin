@@ -156,11 +156,11 @@ void ArdupilotSitlGazeboPlugin::Load(physics::WorldPtr world, sdf::ElementPtr sd
 {
     // Calls every initialization method. They will return 'false' in case of
     // fatal failure.
-    
-    if (!init_gazebo_side(world, sdf))
+
+    if (!init_ros_side())
         return;
     
-    if (!init_ros_side())
+    if (!init_gazebo_side(world, sdf))
         return;
     
     if (!init_ardupilot_side())

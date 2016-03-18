@@ -338,6 +338,7 @@ class ArdupilotSitlGazeboPlugin : public WorldPlugin
     
     boost::thread               _callback_loop_thread;
     
+    bool roverSpawn;
     // LapseLock:
     //  A calling process can block the main loop from running, for a specified maximum time (wall-time, not sim time).
     //  The main loop is resumed if the calling process releases the lock, of if the time has elapsed.
