@@ -35,14 +35,14 @@
   <joint name="rear_left_wheel_joint" type="revolute">
     <parent link="chassis"/>
     <child link="rear_left_wheel"/>
-    <origin rpy="-1.52 0 0" xyz="-0.99377 0.71562 0.34697"/>
+    <origin rpy="-1.52 0 0" xyz="-0.75 0.75 0.34697"/>
     <axis xyz="0.00000000e+00 8.30000000e-04 1.00000000e+00"/>
     <limit effort="0" lower="0" upper="0" velocity="0"/>
   </joint>
   <joint name="rear_right_wheel_joint" type="revolute">
     <parent link="chassis"/>
     <child link="rear_right_wheel"/>
-    <origin rpy="1.52 0 0" xyz="-0.99377 -0.61574 0.34189"/>
+    <origin rpy="1.52 0 0" xyz="-0.75 -0.75 0.34189"/>
     <axis xyz="0.00000000e+00 8.30000000e-04 -1.00000000e+00"/>
     <limit effort="0" lower="0" upper="0" velocity="0"/>
   </joint>
@@ -79,22 +79,12 @@
       </geometry>
     </collision>
     <visual name="visual">
-      <origin rpy="0 0 0" xyz="0.2 0 0.335"/>
+      <origin rpy="-1.5708 0 3.1416" xyz="0.2 1.96 0.26"/>
       <geometry>
-        <box size="1.34 1.0 0.06"/>
+        <mesh filename="package://ardupilot_sitl_gazebo_plugin/meshes/meshes_rover/ErleRover_chassis.STL" scale="0.0055 0.0055 0.0055"/>
       </geometry>
     </visual>
   </link>
-  <gazebo reference="chassis">
-    <visual>
-      <material>
-        <script>
-          <uri>file://media/materials/scripts/gazebo.material</uri>
-          <name>Gazebo/Black</name>
-        </script>
-      </material>
-    </visual>
-  </gazebo>
   <link name="front_left_wheel">
     <inertial>
       <mass value="12"/>
@@ -108,22 +98,12 @@
       </geometry>
     </collision>
     <visual name="tire_visual">
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="3.1416 0 0" xyz="-1.2 -0.1 1.6"/>
       <geometry>
-        <cylinder length="0.2794" radius="0.3175"/>
+        <mesh filename="package://ardupilot_sitl_gazebo_plugin/meshes/meshes_rover/ErleRover_wheel4.STL" scale="0.007 0.007 0.007"/>
       </geometry>
     </visual>
   </link>
-  <gazebo reference="front_left_wheel">
-    <visual>
-      <material>
-        <script>
-          <uri>file://media/materials/scripts/gazebo.material</uri>
-          <name>Gazebo/Black</name>
-        </script>
-      </material>
-    </visual>
-  </gazebo>
   <link name="front_right_wheel">
     <inertial>
       <mass value="12"/>
@@ -137,22 +117,12 @@
       </geometry>
     </collision>
     <visual name="visual">
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="3.1416 0 0" xyz="1.25 -0.1 1.67"/>
       <geometry>
-        <cylinder length="0.2794" radius="0.3175"/>
+        <mesh filename="package://ardupilot_sitl_gazebo_plugin/meshes/meshes_rover/ErleRover_wheel2.STL" scale="0.007 0.007 0.007"/>
       </geometry>
     </visual>
   </link>
-  <gazebo reference="front_right_wheel">
-    <visual>
-      <material>
-        <script>
-          <uri>file://media/materials/scripts/gazebo.material</uri>
-          <name>Gazebo/Black</name>
-        </script>
-      </material>
-    </visual>
-  </gazebo>
   <link name="rear_left_wheel">
     <inertial>
       <mass value="12"/>
@@ -166,22 +136,12 @@
       </geometry>
     </collision>
     <visual name="visual">
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 0" xyz="1.25 0.1 -3.33"/>
       <geometry>
-        <cylinder length="0.2794" radius="0.3175"/>
+        <mesh filename="package://ardupilot_sitl_gazebo_plugin/meshes/meshes_rover/ErleRover_wheel3.STL" scale="0.007 0.007 0.007"/>
       </geometry>
     </visual>
   </link>
-  <gazebo reference="rear_left_wheel">
-    <visual>
-      <material>
-        <script>
-          <uri>file://media/materials/scripts/gazebo.material</uri>
-          <name>Gazebo/Black</name>
-        </script>
-      </material>
-    </visual>
-  </gazebo>
   <link name="rear_right_wheel">
     <inertial>
       <mass value="12"/>
@@ -195,22 +155,12 @@
       </geometry>
     </collision>
     <visual name="visual">
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <origin rpy="0 0 0" xyz="1.25 0.1 -3.33"/>
       <geometry>
-        <cylinder length="0.2794" radius="0.3175"/>
+        <mesh filename="package://ardupilot_sitl_gazebo_plugin/meshes/meshes_rover/ErleRover_wheel1.STL" scale="0.007 0.007 0.007"/>
       </geometry>
     </visual>
   </link>
-  <gazebo reference="rear_right_wheel">
-    <visual>
-      <material>
-        <script>
-          <uri>file://media/materials/scripts/gazebo.material</uri>
-          <name>Gazebo/Black</name>
-        </script>
-      </material>
-    </visual>
-  </gazebo>
   <link name="front_right_wheel_steering_block">
     <inertial>
       <mass value="1"/>
