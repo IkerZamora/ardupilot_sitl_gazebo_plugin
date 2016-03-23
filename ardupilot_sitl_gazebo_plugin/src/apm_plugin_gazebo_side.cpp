@@ -350,7 +350,7 @@ void ArdupilotSitlGazeboPlugin::OnVelMsg(const mav_msgs::CommandMotorSpeed msg)
         this->frWheelSteeringJoint->SetPosition(0, yaw);
         this->flWheelSteeringJoint->SetPosition(0, yaw);
 
-        this->flWheelJoint->SetVelocity(0, -throttle); //Wheel is mounted turned around. TODO: fix the model
+        this->flWheelJoint->SetVelocity(0, throttle); 
         this->frWheelJoint->SetVelocity(0, throttle);
         this->blWheelJoint->SetVelocity(0, throttle);
         this->brWheelJoint->SetVelocity(0, throttle);

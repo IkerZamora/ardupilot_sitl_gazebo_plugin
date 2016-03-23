@@ -1,27 +1,23 @@
 <?xml version="1.0" ?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="rover">
-  <joint name="imu_joint" type="fixed">
-    <parent link="chassis"/>
-    <child link="imu"/>
-  </joint>
   <joint name="front_left_steering_joint" type="revolute">
     <parent link="chassis"/>
     <child link="front_left_wheel_steering_block"/>
-    <origin rpy="1.57079 0 0" xyz="1.20222  0.5 0.35515"/>
-    <axis xyz="0  1  0"/>
+    <origin rpy="-1.52 0 0" xyz="1.20222  0.5 0.35515"/>
+    <axis xyz="0  -1  0"/>
     <limit effort="10.0" lower="-0.7727" upper="0.7727" velocity="0.0"/>
   </joint>
   <joint name="front_right_steering_joint" type="revolute">
     <parent link="chassis"/>
     <child link="front_right_wheel_steering_block"/>
-    <origin rpy="1.57079 0 0" xyz="1.20222 -0.5 0.35515"/>
+    <origin rpy="1.52 0 0" xyz="1.20222 -0.5 0.35515"/>
     <axis xyz="0  1  0"/>
     <limit effort="10.0" lower="-0.7727" upper="0.7727" velocity="0.0"/>
   </joint>
   <joint name="front_left_wheel_joint" type="revolute">
     <parent link="front_left_wheel_steering_block"/>
     <child link="front_left_wheel"/>
-    <origin rpy="0 0 0" xyz="0 -0.00818 -0.21562"/>
+    <origin rpy="0 0 0" xyz="0 -0.00818 0.21562"/>
     <axis xyz="0.00000000e+00 8.30000000e-04 1.00000000e+00"/>
     <limit effort="10.0" lower="0" upper="0" velocity="0"/>
   </joint>
@@ -35,36 +31,17 @@
   <joint name="rear_left_wheel_joint" type="revolute">
     <parent link="chassis"/>
     <child link="rear_left_wheel"/>
-    <origin rpy="-1.57079 0 0" xyz="-0.75 0.75 0.34697"/>
+    <origin rpy="-1.52 0 0" xyz="-0.75 0.75 0.34697"/>
     <axis xyz="0.00000000e+00 8.30000000e-04 1.00000000e+00"/>
     <limit effort="0" lower="0" upper="0" velocity="0"/>
   </joint>
   <joint name="rear_right_wheel_joint" type="revolute">
     <parent link="chassis"/>
     <child link="rear_right_wheel"/>
-    <origin rpy="1.55079 0 0" xyz="-0.75 -0.75 0.34189"/>
+    <origin rpy="1.52 0 0" xyz="-0.75 -0.75 0.34189"/>
     <axis xyz="0.00000000e+00 8.30000000e-04 -1.00000000e+00"/>
     <limit effort="0" lower="0" upper="0" velocity="0"/>
   </joint>
-  <link name="imu">
-    <inertial>
-      <mass value="0.00001"/>
-      <origin rpy="0 0 0" xyz="0.1 0 0.4"/>
-      <inertia ixx="140" ixy="0.0" ixz="0.0" iyy="550" iyz="0.0" izz="550"/>
-    </inertial>
-    <collision name="chassis_bottom">
-      <origin rpy="0 0 0.06" xyz="0.2 0 0.335"/>
-      <geometry>
-        <box size="0.02 0.02 0.02"/>
-      </geometry>
-    </collision>
-    <visual name="visual">
-      <origin rpy="0 0 0.06" xyz="0.2 0 0.335"/>
-      <geometry>
-        <box size="0.02 0.02 0.02"/>
-      </geometry>
-    </visual>
-  </link>
 
   <link name="chassis">
     <inertial>
@@ -146,14 +123,12 @@
     <mu1>1.0</mu1>
     <mu2>1.0</mu2>
     <fdir1>0 0 1</fdir1>
-    <min_depth>0.005</min_depth>
     <kp>1e8</kp>
   </gazebo>
   <gazebo reference="rear_right_wheel">
     <mu1>1.0</mu1>
     <mu2>1.0</mu2>
     <fdir1>0 0 1</fdir1>
-    <min_depth>0.005</min_depth>
     <kp>1e8</kp>
   </gazebo>
 
@@ -161,7 +136,6 @@
     <mu1>1.0</mu1>
     <mu2>1.0</mu2>
     <fdir1>0 0 1</fdir1>
-    <min_depth>0.005</min_depth>
     <kp>1e8</kp>
   </gazebo>
 
@@ -169,7 +143,6 @@
     <mu1>1.0</mu1>
     <mu2>1.0</mu2>
     <fdir1>0 0 1</fdir1>
-    <min_depth>0.005</min_depth>
     <kp>1e8</kp>
   </gazebo>
 
@@ -242,7 +215,7 @@
   <xacro:imu_plugin_macro
     namespace="${namespace}"
     imu_suffix=""
-    parent_link="imu"
+    parent_link="chassis"
     imu_topic="imu"
     mass_imu_sensor="0.015"
     gyroscope_noise_density="0.0003394"
@@ -262,6 +235,7 @@
    
   <gazebo>
     <plugin name="${namespace}_gps_sim" filename="libhector_gazebo_ros_gps.so">
+      <updateRate>90.0</updateRate>
       <alwaysOn>true</alwaysOn>
       <topicName>${namespace}/fix</topicName>
       <velocityTopicName>${namespace}/fix_velocity</velocityTopicName>
@@ -315,7 +289,7 @@
     <xacro:imu_plugin_macro
       namespace="${namespace}"
       imu_suffix="gt"
-      parent_link="imu"
+      parent_link="chassis"
       imu_topic="ground_truth/imu"
       mass_imu_sensor="0.00001"
       gyroscope_noise_density="0.0"
@@ -335,7 +309,7 @@
     <xacro:odometry_plugin_macro
       namespace="${namespace}/ground_truth"
       odometry_sensor_suffix="gt"
-      parent_link="imu"
+      parent_link="chassis"
       pose_topic="pose"
       pose_with_covariance_topic="pose_with_covariance"
       position_topic="position"
