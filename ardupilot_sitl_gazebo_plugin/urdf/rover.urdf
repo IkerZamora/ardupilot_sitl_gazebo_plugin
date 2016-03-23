@@ -119,33 +119,6 @@
       </geometry>
     </visual>
   </link>
-  <gazebo reference="rear_left_wheel">
-    <mu1>1.0</mu1>
-    <mu2>1.0</mu2>
-    <fdir1>0 0 1</fdir1>
-    <kp>1e8</kp>
-  </gazebo>
-  <gazebo reference="rear_right_wheel">
-    <mu1>1.0</mu1>
-    <mu2>1.0</mu2>
-    <fdir1>0 0 1</fdir1>
-    <kp>1e8</kp>
-  </gazebo>
-
-  <gazebo reference="front_left_wheel">
-    <mu1>1.0</mu1>
-    <mu2>1.0</mu2>
-    <fdir1>0 0 1</fdir1>
-    <kp>1e8</kp>
-  </gazebo>
-
-  <gazebo reference="front_right_wheel">
-    <mu1>1.0</mu1>
-    <mu2>1.0</mu2>
-    <fdir1>0 0 1</fdir1>
-    <kp>1e8</kp>
-  </gazebo>
-
   <link name="rear_right_wheel">
     <inertial>
       <mass value="12"/>
@@ -165,6 +138,32 @@
       </geometry>
     </visual>
   </link>
+    <gazebo reference="rear_left_wheel">
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+    <fdir1>0 0 1</fdir1>
+    <kp>1e6</kp>
+  </gazebo>
+  <gazebo reference="rear_right_wheel">
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+    <fdir1>0 0 1</fdir1>
+    <kp>1e6</kp>
+  </gazebo>
+
+  <gazebo reference="front_left_wheel">
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+    <fdir1>0 0 1</fdir1>
+    <kp>1e6</kp>
+  </gazebo>
+
+  <gazebo reference="front_right_wheel">
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+    <fdir1>0 0 1</fdir1>
+    <kp>1e6</kp>
+  </gazebo>
   <link name="front_right_wheel_steering_block">
     <inertial>
       <mass value="1"/>
