@@ -21,28 +21,28 @@
   <joint name="front_left_wheel_joint" type="revolute">
     <parent link="front_left_wheel_steering_block"/>
     <child link="front_left_wheel"/>
-    <origin rpy="-3.09079 0 0" xyz="0 -0.00818 -0.21562"/>
+    <origin rpy="0 0 0" xyz="0 -0.00818 -0.21562"/>
     <axis xyz="0.00000000e+00 8.30000000e-04 1.00000000e+00"/>
     <limit effort="10.0" lower="0" upper="0" velocity="0"/>
   </joint>
   <joint name="front_right_wheel_joint" type="revolute">
     <parent link="front_right_wheel_steering_block"/>
     <child link="front_right_wheel"/>
-    <origin rpy="-0.05079 0 0" xyz="0 -0.00818 0.21562"/>
+    <origin rpy="0 0 0" xyz="0 -0.00818 0.21562"/>
     <axis xyz="0.00000000e+00 8.30000000e-04 -1.00000000e+00"/>
     <limit effort="0" lower="0" upper="0" velocity="0"/>
   </joint>
   <joint name="rear_left_wheel_joint" type="revolute">
     <parent link="chassis"/>
     <child link="rear_left_wheel"/>
-    <origin rpy="-1.52 0 0" xyz="-0.75 0.75 0.34697"/>
+    <origin rpy="-1.57079 0 0" xyz="-0.75 0.75 0.34697"/>
     <axis xyz="0.00000000e+00 8.30000000e-04 1.00000000e+00"/>
     <limit effort="0" lower="0" upper="0" velocity="0"/>
   </joint>
   <joint name="rear_right_wheel_joint" type="revolute">
     <parent link="chassis"/>
     <child link="rear_right_wheel"/>
-    <origin rpy="1.52 0 0" xyz="-0.75 -0.75 0.34189"/>
+    <origin rpy="1.55079 0 0" xyz="-0.75 -0.75 0.34189"/>
     <axis xyz="0.00000000e+00 8.30000000e-04 -1.00000000e+00"/>
     <limit effort="0" lower="0" upper="0" velocity="0"/>
   </joint>
@@ -142,6 +142,37 @@
       </geometry>
     </visual>
   </link>
+  <gazebo reference="rear_left_wheel">
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+    <fdir1>0 0 1</fdir1>
+    <min_depth>0.005</min_depth>
+    <kp>1e8</kp>
+  </gazebo>
+  <gazebo reference="rear_right_wheel">
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+    <fdir1>0 0 1</fdir1>
+    <min_depth>0.005</min_depth>
+    <kp>1e8</kp>
+  </gazebo>
+
+  <gazebo reference="front_left_wheel">
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+    <fdir1>0 0 1</fdir1>
+    <min_depth>0.005</min_depth>
+    <kp>1e8</kp>
+  </gazebo>
+
+  <gazebo reference="front_right_wheel">
+    <mu1>1.0</mu1>
+    <mu2>1.0</mu2>
+    <fdir1>0 0 1</fdir1>
+    <min_depth>0.005</min_depth>
+    <kp>1e8</kp>
+  </gazebo>
+
   <link name="rear_right_wheel">
     <inertial>
       <mass value="12"/>
