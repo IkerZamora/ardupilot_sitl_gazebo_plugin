@@ -320,6 +320,30 @@ void ArdupilotSitlGazeboPlugin::on_rover_model_loaded(){
                       this->blWheelJoint->GetChild()->GetCollision(id));
     this->brWheelRadius = ArdupilotSitlGazeboPlugin::get_collision_radius(
                       this->brWheelJoint->GetChild()->GetCollision(id));
+
+      // Simulate braking using joint stops with stop_erp = 0
+      this->flWheelJoint->SetHighStop(0, 0);
+      this->frWheelJoint->SetHighStop(0, 0);
+      this->blWheelJoint->SetHighStop(0, 0);
+      this->brWheelJoint->SetHighStop(0, 0);
+
+      this->flWheelJoint->SetLowStop(0, 0);
+      this->frWheelJoint->SetLowStop(0, 0);
+      this->blWheelJoint->SetLowStop(0, 0);
+      this->brWheelJoint->SetLowStop(0, 0);
+
+      // stop_erp == 0 means no position correction torques will act
+      this->flWheelJoint->SetParam("stop_erp", 0, 0.0);
+      this->frWheelJoint->SetParam("stop_erp", 0, 0.0);
+      this->blWheelJoint->SetParam("stop_erp", 0, 0.0);
+      this->brWheelJoint->SetParam("stop_erp", 0, 0.0);
+
+      // stop_cfm == 10 means the joints will initially have small damping
+      this->flWheelJoint->SetParam("stop_cfm", 0, 10.0);
+      this->frWheelJoint->SetParam("stop_cfm", 0, 10.0);
+      this->blWheelJoint->SetParam("stop_cfm", 0, 10.0);
+      this->brWheelJoint->SetParam("stop_cfm", 0, 10.0);
+
 }
 
 /*
@@ -347,6 +371,19 @@ void ArdupilotSitlGazeboPlugin::OnVelMsg(const mav_msgs::CommandMotorSpeed msg)
         double yaw = (500.0 - msg.motor_speed[0]) * 0.7727 / 400.0;
         double throttle = (msg.motor_speed[2] - 500.0) / 80.0;
 
+         // Lock wheels if throttle is 0
+        if (throttle == 0){
+            this->flWheelJoint->SetParam("stop_cfm", 0, 0.0);
+            this->frWheelJoint->SetParam("stop_cfm", 0, 0.0);
+            this->blWheelJoint->SetParam("stop_cfm", 0, 0.0);
+            this->brWheelJoint->SetParam("stop_cfm", 0, 0.0);
+        } else {
+            this->flWheelJoint->SetParam("stop_cfm", 0, 1.0);
+            this->frWheelJoint->SetParam("stop_cfm", 0, 1.0);
+            this->blWheelJoint->SetParam("stop_cfm", 0, 1.0);
+            this->brWheelJoint->SetParam("stop_cfm", 0, 1.0);
+        }
+        
         this->frWheelSteeringJoint->SetPosition(0, yaw);
         this->flWheelSteeringJoint->SetPosition(0, yaw);
 

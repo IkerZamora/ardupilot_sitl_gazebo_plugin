@@ -38,7 +38,7 @@
   <joint name="rear_right_wheel_joint" type="revolute">
     <parent link="chassis"/>
     <child link="rear_right_wheel"/>
-    <origin rpy="1.52 0 0" xyz="-0.75 -0.75 0.34189"/>
+    <origin rpy="1.52 0 0" xyz="-0.75 -0.75 0.34697"/>
     <axis xyz="0.00000000e+00 8.30000000e-04 -1.00000000e+00"/>
     <limit effort="0" lower="0" upper="0" velocity="0"/>
   </joint>
