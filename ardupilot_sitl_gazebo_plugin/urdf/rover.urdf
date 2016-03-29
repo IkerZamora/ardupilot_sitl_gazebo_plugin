@@ -3,23 +3,23 @@
   <joint name="front_left_steering_joint" type="revolute">
     <parent link="chassis"/>
     <child link="front_left_wheel_steering_block"/>
-    <origin rpy="1.52 0 0" xyz="1.20222  0.5 0.35515"/>
-    <axis xyz="0  1  0"/>
-    <limit effort="0" lower="-0.7727" upper="0.7727" velocity="0.0"/>
+    <origin rpy="-1.52 0 0" xyz="1.20222  0.5 0.35515"/>
+    <axis xyz="0  -1  0"/>
+    <limit effort="10.0" lower="-0.7727" upper="0.7727" velocity="0.0"/>
   </joint>
   <joint name="front_right_steering_joint" type="revolute">
     <parent link="chassis"/>
     <child link="front_right_wheel_steering_block"/>
     <origin rpy="1.52 0 0" xyz="1.20222 -0.5 0.35515"/>
     <axis xyz="0  1  0"/>
-    <limit effort="0" lower="-0.7727" upper="0.7727" velocity="0.0"/>
+    <limit effort="10.0" lower="-0.7727" upper="0.7727" velocity="0.0"/>
   </joint>
   <joint name="front_left_wheel_joint" type="revolute">
     <parent link="front_left_wheel_steering_block"/>
     <child link="front_left_wheel"/>
-    <origin rpy="0 0 0" xyz="0 -0.00818 -0.21562"/>
+    <origin rpy="0 0 0" xyz="0 -0.00818 0.21562"/>
     <axis xyz="0.00000000e+00 8.30000000e-04 1.00000000e+00"/>
-    <limit effort="0" lower="0" upper="0" velocity="0"/>
+    <limit effort="10.0" lower="0" upper="0" velocity="0"/>
   </joint>
   <joint name="front_right_wheel_joint" type="revolute">
     <parent link="front_right_wheel_steering_block"/>
@@ -43,31 +43,6 @@
     <limit effort="0" lower="0" upper="0" velocity="0"/>
   </joint>
 
-  <joint name="imu_joint" type="fixed">    
-    <parent link="chassis"/>   
-    <child link="imu"/>    
-  </joint>
-
-  <link name="imu">    
-    <inertial>   
-      <mass value="0.00001"/>    
-      <origin rpy="0 0 0" xyz="0.1 0 0.4"/>    
-      <inertia ixx="140" ixy="0.0" ixz="0.0" iyy="550" iyz="0.0" izz="550"/>   
-    </inertial>    
-    <collision name="chassis_bottom">    
-      <origin rpy="0 0 0.06" xyz="0.2 0 0.335"/>   
-      <geometry>   
-        <box size="0.02 0.02 0.02"/>   
-      </geometry>    
-    </collision>   
-    <visual name="visual">   
-      <origin rpy="0 0 0.06" xyz="0.2 0 0.335"/>   
-      <geometry>   
-        <box size="0.02 0.02 0.02"/>   
-      </geometry>    
-    </visual>    
-  </link>
-
   <link name="chassis">
     <inertial>
       <mass value="500.0"/>
@@ -80,7 +55,12 @@
         <box size="1.34 1.0 0.06"/>
       </geometry>
     </collision>
-    
+    <visual name="visual">
+      <origin rpy="-1.5708 0 3.1416" xyz="0.2 1.96 0.26"/>
+      <geometry>
+        <mesh filename="package://ardupilot_sitl_gazebo_plugin/meshes/meshes_rover/ErleRover_chassis.STL" scale="0.0055 0.0055 0.0055"/>
+      </geometry>
+    </visual>
   </link>
   <link name="front_left_wheel">
     <inertial>
@@ -94,7 +74,12 @@
         <cylinder length="0.2794" radius="0.3175"/>
       </geometry>
     </collision>
-    
+    <visual name="tire_visual">
+      <origin rpy="3.1416 0 0" xyz="-1.2 -0.1 1.6"/>
+      <geometry>
+        <mesh filename="package://ardupilot_sitl_gazebo_plugin/meshes/meshes_rover/ErleRover_wheel4.STL" scale="0.007 0.007 0.007"/>
+      </geometry>
+    </visual>
   </link>
   <link name="front_right_wheel">
     <inertial>
@@ -108,7 +93,12 @@
         <cylinder length="0.2794" radius="0.3175"/>
       </geometry>
     </collision>
-    
+    <visual name="visual">
+      <origin rpy="3.1416 0 0" xyz="1.25 -0.1 1.67"/>
+      <geometry>
+        <mesh filename="package://ardupilot_sitl_gazebo_plugin/meshes/meshes_rover/ErleRover_wheel2.STL" scale="0.007 0.007 0.007"/>
+      </geometry>
+    </visual>
   </link>
   <link name="rear_left_wheel">
     <inertial>
@@ -122,8 +112,23 @@
         <cylinder length="0.2794" radius="0.3175"/>
       </geometry>
     </collision>
-    
+    <visual name="visual">
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.2794" radius="0.3175"/>
+      </geometry>
+    </visual>
   </link>
+  <gazebo reference="rear_left_wheel">   
+    <visual>   
+      <material>   
+        <script>   
+          <uri>file://media/materials/scripts/gazebo.material</uri>    
+          <name>Gazebo/Black</name>    
+        </script>    
+      </material>    
+    </visual>    
+  </gazebo>
   <link name="rear_right_wheel">
     <inertial>
       <mass value="12"/>
@@ -136,8 +141,23 @@
         <cylinder length="0.2794" radius="0.3175"/>
       </geometry>
     </collision>
-    
+    <visual name="visual">
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <cylinder length="0.2794" radius="0.3175"/>
+      </geometry>
+    </visual>
   </link>
+  <gazebo reference="rear_right_wheel">   
+    <visual>   
+      <material>   
+        <script>   
+          <uri>file://media/materials/scripts/gazebo.material</uri>    
+          <name>Gazebo/Black</name>    
+        </script>    
+      </material>    
+    </visual>    
+  </gazebo>
     <gazebo reference="rear_left_wheel">
     <mu1>1.0</mu1>
     <mu2>1.0</mu2>
@@ -214,15 +234,15 @@
   <xacro:imu_plugin_macro
     namespace="${namespace}"
     imu_suffix=""
-    parent_link="imu"
+    parent_link="chassis"
     imu_topic="imu"
     mass_imu_sensor="0.015"
     gyroscope_noise_density="0.0003394"
     gyroscopoe_random_walk="0.000038785"
     gyroscope_bias_correlation_time="1000.0"
     gyroscope_turn_on_bias_sigma="0.0087"
-    accelerometer_noise_density="0.002"
-    accelerometer_random_walk="0.003"
+    accelerometer_noise_density="0.004"
+    accelerometer_random_walk="0.006"
     accelerometer_bias_correlation_time="300.0"
     accelerometer_turn_on_bias_sigma="0.1960"
   >
@@ -234,6 +254,7 @@
    
   <gazebo>
     <plugin name="${namespace}_gps_sim" filename="libhector_gazebo_ros_gps.so">
+      <updateRate>90.0</updateRate>
       <alwaysOn>true</alwaysOn>
       <topicName>${namespace}/fix</topicName>
       <velocityTopicName>${namespace}/fix_velocity</velocityTopicName>
@@ -287,7 +308,7 @@
     <xacro:imu_plugin_macro
       namespace="${namespace}"
       imu_suffix="gt"
-      parent_link="imu"
+      parent_link="chassis"
       imu_topic="ground_truth/imu"
       mass_imu_sensor="0.00001"
       gyroscope_noise_density="0.0"
@@ -307,7 +328,7 @@
     <xacro:odometry_plugin_macro
       namespace="${namespace}/ground_truth"
       odometry_sensor_suffix="gt"
-      parent_link="imu"
+      parent_link="chassis"
       pose_topic="pose"
       pose_with_covariance_topic="pose_with_covariance"
       position_topic="position"
@@ -326,7 +347,7 @@
       noise_uniform_quaternion="0 0 0"
       noise_uniform_linear_velocity="0 0 0"
       noise_uniform_angular_velocity="0 0 0"
-      enable_odometry_map="true"
+      enable_odometry_map="false"
       odometry_map=""
       image_scale=""
     >
