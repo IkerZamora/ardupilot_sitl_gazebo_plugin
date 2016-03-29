@@ -43,13 +43,30 @@
     <limit effort="0" lower="0" upper="0" velocity="0"/>
   </joint>
 
-  <link name="base_link"></link>
-     
-  <joint name="base_joint" type="fixed">
-    <origin xyz="0 0 0" rpy="0 0 0" />
-    <parent link="base_link" />
-    <child link="chassis" />
+  <joint name="imu_joint" type="fixed">    
+    <parent link="chassis"/>   
+    <child link="imu"/>    
   </joint>
+
+  <link name="imu">    
+    <inertial>   
+      <mass value="0.00001"/>    
+      <origin rpy="0 0 0" xyz="0.1 0 0.4"/>    
+      <inertia ixx="140" ixy="0.0" ixz="0.0" iyy="550" iyz="0.0" izz="550"/>   
+    </inertial>    
+    <collision name="chassis_bottom">    
+      <origin rpy="0 0 0.06" xyz="0.2 0 0.335"/>   
+      <geometry>   
+        <box size="0.02 0.02 0.02"/>   
+      </geometry>    
+    </collision>   
+    <visual name="visual">   
+      <origin rpy="0 0 0.06" xyz="0.2 0 0.335"/>   
+      <geometry>   
+        <box size="0.02 0.02 0.02"/>   
+      </geometry>    
+    </visual>    
+  </link>
 
   <link name="chassis">
     <inertial>
@@ -222,7 +239,7 @@
   <xacro:imu_plugin_macro
     namespace="${namespace}"
     imu_suffix=""
-    parent_link="base_link"
+    parent_link="imu"
     imu_topic="imu"
     mass_imu_sensor="0.015"
     gyroscope_noise_density="0.0003394"
@@ -242,7 +259,6 @@
    
   <gazebo>
     <plugin name="${namespace}_gps_sim" filename="libhector_gazebo_ros_gps.so">
-      <updateRate>90.0</updateRate>
       <alwaysOn>true</alwaysOn>
       <topicName>${namespace}/fix</topicName>
       <velocityTopicName>${namespace}/fix_velocity</velocityTopicName>
@@ -296,7 +312,7 @@
     <xacro:imu_plugin_macro
       namespace="${namespace}"
       imu_suffix="gt"
-      parent_link="base_link"
+      parent_link="imu"
       imu_topic="ground_truth/imu"
       mass_imu_sensor="0.00001"
       gyroscope_noise_density="0.0"
@@ -316,7 +332,7 @@
     <xacro:odometry_plugin_macro
       namespace="${namespace}/ground_truth"
       odometry_sensor_suffix="gt"
-      parent_link="base_link"
+      parent_link="imu"
       pose_topic="pose"
       pose_with_covariance_topic="pose_with_covariance"
       position_topic="position"
