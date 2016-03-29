@@ -355,4 +355,21 @@
       <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
     </xacro:odometry_plugin_macro>
   </xacro:if>
+
+  <!-- Front facing camera -->
+  <xacro:include filename="$(find ardupilot_sitl_gazebo_plugin)/urdf/sensors/generic_camera.urdf.xacro" />
+  <xacro:generic_camera
+    name="${namespace}/front"
+    parent="chassis"
+    ros_topic="image_front_raw"
+    cam_info_topic="camera_front_info"
+    update_rate="60"
+    res_x="1280"
+    res_y="720"
+    image_format="R8G8B8"
+    hfov="120"
+    framename="${namespace}_frontcam">
+    <origin xyz="-0.3 0 1" rpy="0 0 0"/>
+  </xacro:generic_camera>
+
 </robot>
