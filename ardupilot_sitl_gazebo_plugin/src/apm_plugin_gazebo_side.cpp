@@ -368,10 +368,10 @@ void ArdupilotSitlGazeboPlugin::OnVelMsg(const mav_msgs::CommandMotorSpeed msg)
 {   
     if (roverSpawn){
         //Normalize values
-        double yaw = (500.0 - msg.motor_speed[0]) * 0.7727 / 400.0;
+        double yaw = (msg.motor_speed[0] - 500.0) * 0.7727 / 400.0;
         double throttle = (msg.motor_speed[2] - 500.0) / 80.0;
 
-         // Lock wheels if throttle is 0
+        // Lock wheels if throttle is 0
         if (throttle == 0){
             this->flWheelJoint->SetParam("stop_cfm", 0, 0.0);
             this->frWheelJoint->SetParam("stop_cfm", 0, 0.0);
