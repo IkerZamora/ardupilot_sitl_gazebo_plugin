@@ -15,11 +15,13 @@ class image_converter:
   def __init__(self):
 
     self.bridge = CvBridge()
-    self.image_sub = rospy.Subscriber("camera/rgb/image_raw",Image,self.callback)
+    self.image_sub = rospy.Subscriber("camera/depth/image_raw",Image,self.callback)
+#    self.image_sub = rospy.Subscriber("camera/rgb/image_raw",Image,self.callback)
+
 
   def callback(self,data):
     try:
-      cv_image = self.bridge.imgmsg_to_cv2(data, "bgr8")
+      cv_image = self.bridge.imgmsg_to_cv2(data,  desired_encoding="passthrough" )
     except CvBridgeError as e:
       print(e)
 
