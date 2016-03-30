@@ -324,6 +324,7 @@ class ArdupilotSitlGazeboPlugin : public WorldPlugin
     ros::Duration               _control_period;
     ros::Time                   _last_update_sim_time_ros;
     ros::Time                   _last_write_sim_time_ros;
+    ros::Time                   _last_gps_call;
     
     event::ConnectionPtr        _updateConnection;
   
@@ -367,6 +368,8 @@ class ArdupilotSitlGazeboPlugin : public WorldPlugin
     int                         _nbHolders_lapseLock;       // [1] number of calling processes to the lapselock (case of multiple lockers)
     boost::mutex                _lapseLock_mutex;           // to protect the lapse-lock from simulatenous modifications
     
+    float last_lat, last_lon, last_alt;
+    float max_vel;
 };
 
 }   // end of namespace gazebo

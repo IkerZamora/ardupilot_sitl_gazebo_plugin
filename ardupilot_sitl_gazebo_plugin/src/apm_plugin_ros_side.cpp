@@ -79,7 +79,8 @@ bool ArdupilotSitlGazeboPlugin::init_ros_side()
     _service_take_lapseLock    = _rosnode->advertiseService("take_apm_lapseLock",    &ArdupilotSitlGazeboPlugin::service_take_lapseLock,    this);
     _service_release_lapseLock = _rosnode->advertiseService("release_apm_lapseLock", &ArdupilotSitlGazeboPlugin::service_release_lapseLock, this);
     ROS_INFO( PLUGIN_LOG_PREPEND "Services declared !");
-      
+    
+    max_vel = 0.0;
     return true;
 }
 
@@ -158,15 +159,44 @@ void ArdupilotSitlGazeboPlugin::gps_callback(const sensor_msgs::NavSatFix &gps_f
     // This method is executed independently from the main loop thread.
     // Beware of access to shared variables memory. Use mutexes if required.
     
-    // Mutex on '_fdm', for it is concurrently read by 'send_apm_output()'
-    _fdm_mutex.lock();
+    ros::Time current_gps_call = ros::Time::now();
     
-    _fdm.position_latlonalt[0] = gps_fix_msg.latitude;     // in [degrees]
-    _fdm.position_latlonalt[1] = gps_fix_msg.longitude;    // in [degrees]
-    _fdm.position_latlonalt[2] = gps_fix_msg.altitude;     // in [m], toward UP
+    double dt = current_gps_call.toSec() - _last_gps_call.toSec();
+
+    float latitude = gps_fix_msg.latitude;
+    float longitude = gps_fix_msg.longitude;
+    float altitude = gps_fix_msg.altitude;
+
+    float lat_vel = (latitude - last_lat) / dt * 10000.0;
+    float lon_vel = (longitude - last_lon) / dt * 10000.0;
+    float alt_vel = (altitude - last_alt) / dt * 10000.0;
+
+    //ROS_INFO("lat = %f, lon = %f", lat_vel, lon_vel);
+
+    float vel = sqrt(pow(lat_vel,2) + pow(lon_vel,2));
+
+    if (vel > 0.0) ROS_INFO("Velocity = %f",vel);
+    if (vel < 10.0 && vel > max_vel) {
+        max_vel = vel;
+        ROS_INFO("New max vel = %f", max_vel);
+    }
+    if (abs(vel) < 10){
+        // Mutex on '_fdm', for it is concurrently read by 'send_apm_output()'
+        _fdm_mutex.lock();
+
+        _fdm.position_latlonalt[0] = latitude;     // in [degrees]
+        _fdm.position_latlonalt[1] = longitude;    // in [degrees]
+        _fdm.position_latlonalt[2] = altitude;     // in [m], toward UP
+
+        _fdm_mutex.unlock();
+    }
+        last_lat = latitude;
+        last_lon = longitude;
+        last_alt = altitude;  
+
     
-    _fdm_mutex.unlock();
     
+    _last_gps_call = current_gps_call;
     // Available display for GPS debug
     #ifdef DEBUG_DISP_GPS_POSITION
         static double home_lat = 0, home_lon = 0;       // a home for debug
