@@ -119,16 +119,7 @@
       </geometry>
     </visual>
   </link>
-  <gazebo reference="rear_left_wheel">   
-    <visual>   
-      <material>   
-        <script>   
-          <uri>file://media/materials/scripts/gazebo.material</uri>    
-          <name>Gazebo/Black</name>    
-        </script>    
-      </material>    
-    </visual>    
-  </gazebo>
+
   <link name="rear_right_wheel">
     <inertial>
       <mass value="12"/>
@@ -148,41 +139,32 @@
       </geometry>
     </visual>
   </link>
-  <gazebo reference="rear_right_wheel">   
-    <visual>   
-      <material>   
-        <script>   
-          <uri>file://media/materials/scripts/gazebo.material</uri>    
-          <name>Gazebo/Black</name>    
-        </script>    
-      </material>    
-    </visual>    
-  </gazebo>
-    <gazebo reference="rear_left_wheel">
+
+  <gazebo reference="rear_left_wheel">
     <mu1>1.0</mu1>
     <mu2>1.0</mu2>
-    <fdir1>0 0 1</fdir1>
-    <kp>1e6</kp>
+    <fdir1>1 0 0</fdir1>
+    <kp>1e7</kp>
   </gazebo>
   <gazebo reference="rear_right_wheel">
     <mu1>1.0</mu1>
     <mu2>1.0</mu2>
-    <fdir1>0 0 1</fdir1>
-    <kp>1e6</kp>
+    <fdir1>1 0 0</fdir1>
+    <kp>1e7</kp>
   </gazebo>
 
   <gazebo reference="front_left_wheel">
     <mu1>1.0</mu1>
     <mu2>1.0</mu2>
-    <fdir1>0 0 1</fdir1>
-    <kp>1e6</kp>
+    <fdir1>1 0 0</fdir1>
+    <kp>1e7</kp>
   </gazebo>
 
   <gazebo reference="front_right_wheel">
     <mu1>1.0</mu1>
     <mu2>1.0</mu2>
-    <fdir1>0 0 1</fdir1>
-    <kp>1e6</kp>
+    <fdir1>1 0 0</fdir1>
+    <kp>1e7</kp>
   </gazebo>
   <link name="front_right_wheel_steering_block">
     <inertial>
@@ -222,6 +204,7 @@
   <xacro:include filename="$(find ardupilot_sitl_gazebo_plugin)/urdf/gps_home_location.xacro" />
   <!-- in degrees, 0 so North is towards positive X values, and East is towards negative Y values -->
   <xacro:property name="referenceHeading" value="0" />
+  <xacro:property name="M_PI" value="3.1415926535897931" />
 
   <!-- Instantiate a controller. -->
   <xacro:controller_plugin_macro
@@ -371,5 +354,21 @@
     framename="${namespace}_frontcam">
     <origin xyz="-0.3 0 1" rpy="0 0 0"/>
   </xacro:generic_camera>
+
+  <xacro:include filename="$(find ardupilot_sitl_gazebo_plugin)/urdf/sensors/lidar_sensor.urdf.xacro" />
+  <xacro:lidar_sensor
+    name="sonar2"
+    parent="chassis"
+    ros_topic="sonar_front"
+    update_rate="10"
+    min_range="0.01"
+    max_range="10.0"
+    field_of_view_horizontal="${70*M_PI/180}"
+    field_of_view_vertical="${1*M_PI/180}"
+    ray_count_horizontal="140"
+    ray_count_vertical="1"
+    sensor_mesh="lidar_lite_v2_withRay/meshes/lidar_lite_v2_withRay.dae">
+    <origin xyz="1.6 0 0.55" rpy="0 0 0"/>
+  </xacro:lidar_sensor>
 
 </robot>
