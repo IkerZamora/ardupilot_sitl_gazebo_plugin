@@ -204,7 +204,10 @@
   <xacro:include filename="$(find ardupilot_sitl_gazebo_plugin)/urdf/gps_home_location.xacro" />
   <!-- in degrees, 0 so North is towards positive X values, and East is towards negative Y values -->
   <xacro:property name="referenceHeading" value="0" />
+  
   <xacro:property name="M_PI" value="3.1415926535897931" />
+  
+
 
   <!-- Instantiate a controller. -->
   <xacro:controller_plugin_macro
@@ -370,5 +373,11 @@
     sensor_mesh="lidar_lite_v2_withRay/meshes/lidar_lite_v2_withRay.dae">
     <origin xyz="1.6 0 0.55" rpy="0 0 0"/>
   </xacro:lidar_sensor>
+
+  <xacro:include filename="$(find ardupilot_sitl_gazebo_plugin)/urdf/sensors/kinect.urdf.xacro" />  
+  <xacro:sensor_kinect 
+    parent="chassis">
+    <origin xyz="1.6 0 0.55" rpy="0 0 0"/>
+  </xacro:sensor_kinect>
 
 </robot>
