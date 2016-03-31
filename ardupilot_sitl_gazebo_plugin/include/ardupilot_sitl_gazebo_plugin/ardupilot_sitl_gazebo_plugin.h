@@ -245,40 +245,8 @@ class ArdupilotSitlGazeboPlugin : public WorldPlugin
     physics::JointPtr flWheelSteeringJoint;
     physics::JointPtr frWheelSteeringJoint;
 
-    // Rover SDF parameters
-    double frontTorque;
-    double backTorque;
-    double frontBrakeTorque;
-    double backBrakeTorque;
-    double tireAngleRange;
-    double maxSpeed;
-    double maxSteer;
-    double aeroLoad;
-
-    double steeringRatio;
-    double steeredWheelForce;
-
     // Time of last update, used to detect resets
     common::Time lastTime;
-
-    /// joint information from model
-    double wheelRadius;
-    double flWheelRadius;
-    double frWheelRadius;
-    double blWheelRadius;
-    double brWheelRadius;
-    double wheelbaseLength;
-    double frontTrackWidth;
-    double backTrackWidth;
-
-
-    /// state of vehicle
-    double flSteeringState;
-    double frSteeringState;
-    double flWheelState;
-    double frWheelState;
-    double blWheelState;
-    double brWheelState;
 
     // Transport node for the rover
     transport::NodePtr node;

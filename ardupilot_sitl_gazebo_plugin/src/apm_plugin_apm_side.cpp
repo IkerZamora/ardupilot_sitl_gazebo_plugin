@@ -114,7 +114,6 @@ bool ArdupilotSitlGazeboPlugin::receive_apm_input()
     }
 
     szRecv = _sock_control_from_ardu->recv(&pkt, sizeof(pkt), 100);
-    //ROS_INFO("recv = %d", szRecv);
 
     // Expects a servo control packet
     if (szRecv != sizeof(servo_packet)) {
@@ -123,23 +122,10 @@ bool ArdupilotSitlGazeboPlugin::receive_apm_input()
 
     // Overwrites the servo control message
     int i;
-    //bool areAllRotorsOff = true;
 
     for (i=0; i<NB_SERVOS_MOTOR_SPEED; i++) {
          _cmd_motor_speed[i] = pkt.servos[i] * 1000.0;
     }
-
-    // When all rotors are off, makes them turn at a very slow pace
-    // shows to show that everything works and that the simulation is running
-    //if (areAllRotorsOff) {
-    //    for (i=0; i<_nbMotorSpeed; i++) {
-            // in [rad/s]
-    //        _cmd_motor_speed[i] = 5;     // <=> 0.5 tr/sec
-    //    }
-    //}
-
-    // Checks if the parachute servo commands a release
-    //check_parachute_cmd(pkt.servos[SERVO_PARACHUTE]);
 
     publish_commandMotorSpeed();
     return true;

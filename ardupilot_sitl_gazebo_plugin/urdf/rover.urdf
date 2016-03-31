@@ -1,3 +1,8 @@
+<!--
+This work is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License. 
+To view a copy of this license, visit http://creativecommons.org/licenses/by-nc/4.0/.
+-->
+
 <?xml version="1.0" ?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="rover">
   <joint name="front_left_steering_joint" type="revolute">
@@ -166,6 +171,7 @@
     <fdir1>1 0 0</fdir1>
     <kp>1e7</kp>
   </gazebo>
+  
   <link name="front_right_wheel_steering_block">
     <inertial>
       <mass value="1"/>
@@ -207,8 +213,6 @@
   
   <xacro:property name="M_PI" value="3.1415926535897931" />
   
-
-
   <!-- Instantiate a controller. -->
   <xacro:controller_plugin_macro
     namespace="${namespace}"

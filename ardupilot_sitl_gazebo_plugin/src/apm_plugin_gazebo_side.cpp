@@ -70,8 +70,6 @@ bool ArdupilotSitlGazeboPlugin::init_gazebo_side(physics::WorldPtr world, sdf::E
     ROS_INFO("Model name:      %s", _modelName.c_str());
     ROS_INFO("Nb motor servos: %d", _nbMotorSpeed);
 
-    
-
     // 'transport' is the communication library of Gazebo. It handles publishers
     // and subscribers.
     transport::NodePtr node(new transport::Node());
@@ -203,21 +201,6 @@ void ArdupilotSitlGazeboPlugin::on_rover_model_loaded(){
 
     _rover_model = _parent_world->GetModel("rover");
 
-    //ROVER STUFF
-    this->wheelRadius = 0.1;
-    this->flWheelRadius = 0.1;
-    this->frWheelRadius = 0.1;
-    this->blWheelRadius = 0.1;
-    this->brWheelRadius = 0.1;
-    this->steeredWheelForce = 5000;
-
-    this->frontTorque = 0;
-    this->backTorque = 0;
-    this->tireAngleRange = 0;
-    this->maxSpeed = 0;
-    this->maxSteer = 0;
-    this->aeroLoad = 0;
-
     this->node.reset(new transport::Node());
     this->node->Init(_parent_world->GetName());
 
@@ -246,83 +229,6 @@ void ArdupilotSitlGazeboPlugin::on_rover_model_loaded(){
     if (!this->flWheelSteeringJoint)
         gzthrow("could not find front left steering joint\n");
 
-    // get some vehicle parameters
-    std::string paramName;
-    double paramDefault;
-
-    paramName = "front_torque";
-    paramDefault = 0;
-    if (_sdf->HasElement(paramName))
-        this->frontTorque = _sdf->Get<double>(paramName);
-    else
-        this->frontTorque = paramDefault;
-
-    paramName = "back_torque";
-    paramDefault = 2000;
-    if (_sdf->HasElement(paramName))
-        this->backTorque = _sdf->Get<double>(paramName);
-    else
-        this->backTorque = paramDefault;
-
-    paramName = "max_speed";
-    paramDefault = 10;
-    if (_sdf->HasElement(paramName))
-        this->maxSpeed = _sdf->Get<double>(paramName);
-    else
-        this->maxSpeed = paramDefault;
-
-    paramName = "max_steer";
-    paramDefault = 0.6;
-    if (_sdf->HasElement(paramName))
-        this->maxSteer = _sdf->Get<double>(paramName);
-    else
-        this->maxSteer = paramDefault;
-
-    paramName = "aero_load";
-    paramDefault = 0.1;
-    if (_sdf->HasElement(paramName))
-        this->aeroLoad = _sdf->Get<double>(paramName);
-    else
-        this->aeroLoad = paramDefault;
-
-    
-
-    // Update wheel radius for each wheel from SDF collision objects
-    //  assumes that wheel link is child of joint (and not parent of joint)
-    //  assumes that wheel link has only one collision
-    unsigned int id = 0;
-    this->flWheelRadius = ArdupilotSitlGazeboPlugin::get_collision_radius(
-                      this->flWheelJoint->GetChild()->GetCollision(id));
-    this->frWheelRadius = ArdupilotSitlGazeboPlugin::get_collision_radius(
-                      this->frWheelJoint->GetChild()->GetCollision(id));
-    this->blWheelRadius = ArdupilotSitlGazeboPlugin::get_collision_radius(
-                      this->blWheelJoint->GetChild()->GetCollision(id));
-    this->brWheelRadius = ArdupilotSitlGazeboPlugin::get_collision_radius(
-                      this->brWheelJoint->GetChild()->GetCollision(id));
-
-      // Simulate braking using joint stops with stop_erp = 0
-      this->flWheelJoint->SetHighStop(0, 0);
-      this->frWheelJoint->SetHighStop(0, 0);
-      this->blWheelJoint->SetHighStop(0, 0);
-      this->brWheelJoint->SetHighStop(0, 0);
-
-      this->flWheelJoint->SetLowStop(0, 0);
-      this->frWheelJoint->SetLowStop(0, 0);
-      this->blWheelJoint->SetLowStop(0, 0);
-      this->brWheelJoint->SetLowStop(0, 0);
-
-      // stop_erp == 0 means no position correction torques will act
-      this->flWheelJoint->SetParam("stop_erp", 0, 0.0);
-      this->frWheelJoint->SetParam("stop_erp", 0, 0.0);
-      this->blWheelJoint->SetParam("stop_erp", 0, 0.0);
-      this->brWheelJoint->SetParam("stop_erp", 0, 0.0);
-
-      // stop_cfm == 10 means the joints will initially have small damping
-      this->flWheelJoint->SetParam("stop_cfm", 0, 10.0);
-      this->frWheelJoint->SetParam("stop_cfm", 0, 10.0);
-      this->blWheelJoint->SetParam("stop_cfm", 0, 10.0);
-      this->brWheelJoint->SetParam("stop_cfm", 0, 10.0);
-
 }
 
 /*
@@ -342,14 +248,18 @@ void ArdupilotSitlGazeboPlugin::on_gazebo_modelInfo(ConstModelPtr &_msg)
         on_rover_model_loaded();
     }
 }
-/////////////////////////////////////////////////
+
+/*
+This method is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License. 
+To view a copy of this license, visit http://creativecommons.org/licenses/by-nc/4.0/.
+*/
 void ArdupilotSitlGazeboPlugin::OnVelMsg(const mav_msgs::CommandMotorSpeed msg)
 {   
     if (roverSpawn){
+
         //Normalize values
         double yaw = (500.0 - msg.motor_speed[0]) * 0.7727 / 400.0;
         double throttle = (msg.motor_speed[2] - 500.0) / 80.0 + 0.0875;
-
                 
         this->frWheelSteeringJoint->SetPosition(0, yaw);
         this->flWheelSteeringJoint->SetPosition(0, yaw);
