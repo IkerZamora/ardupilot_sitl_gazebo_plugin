@@ -42,8 +42,9 @@ Thanks to him for sharing his setup configuration and Python interface.
 
 AUTHORS
 -------
-Aurélien ROY
-Maxime LAFLEUR
+- Aurélien ROY
+- Maxime LAFLEUR
+- Iker Zamora
 
 
 ARDUPILOT
