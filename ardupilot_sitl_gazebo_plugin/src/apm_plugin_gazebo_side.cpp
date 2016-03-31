@@ -235,7 +235,7 @@ void ArdupilotSitlGazeboPlugin::on_rover_model_loaded(){
     this->blWheelJoint->SetParam("stop_erp", 0, 0.0);       
     this->brWheelJoint->SetParam("stop_erp", 0, 0.0);
 
-    // stop_cfm == 10 means the joints will initially have mall damping     
+    // Apply small damping to the joints    
     this->flWheelJoint->SetParam("stop_cfm", 0, 10.0);      
     this->frWheelJoint->SetParam("stop_cfm", 0, 10.0);      
     this->blWheelJoint->SetParam("stop_cfm", 0, 10.0);      
@@ -271,7 +271,7 @@ void ArdupilotSitlGazeboPlugin::OnVelMsg(const mav_msgs::CommandMotorSpeed msg)
 
         //Normalize values
         double yaw = (500.0 - msg.motor_speed[0]) * 0.7727 / 400.0;
-        double throttle = (msg.motor_speed[2] - 500.0) / 80.0 + 0.0875;
+        double throttle = (msg.motor_speed[2] - 500.0) / 80.0;
                 
         this->frWheelSteeringJoint->SetPosition(0, yaw);
         this->flWheelSteeringJoint->SetPosition(0, yaw);
