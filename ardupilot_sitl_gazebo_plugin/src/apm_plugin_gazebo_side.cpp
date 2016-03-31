@@ -229,6 +229,18 @@ void ArdupilotSitlGazeboPlugin::on_rover_model_loaded(){
     if (!this->flWheelSteeringJoint)
         gzthrow("could not find front left steering joint\n");
 
+    // stop_erp == 0 means no position correction torques will act        
+    this->flWheelJoint->SetParam("stop_erp", 0, 0.0);       
+    this->frWheelJoint->SetParam("stop_erp", 0, 0.0);       
+    this->blWheelJoint->SetParam("stop_erp", 0, 0.0);       
+    this->brWheelJoint->SetParam("stop_erp", 0, 0.0);
+
+    // stop_cfm == 10 means the joints will initially have mall damping     
+    this->flWheelJoint->SetParam("stop_cfm", 0, 10.0);      
+    this->frWheelJoint->SetParam("stop_cfm", 0, 10.0);      
+    this->blWheelJoint->SetParam("stop_cfm", 0, 10.0);      
+    this->brWheelJoint->SetParam("stop_cfm", 0, 10.0);
+
 }
 
 /*
@@ -250,8 +262,8 @@ void ArdupilotSitlGazeboPlugin::on_gazebo_modelInfo(ConstModelPtr &_msg)
 }
 
 /*
-This method is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License. 
-To view a copy of this license, visit http://creativecommons.org/licenses/by-nc/4.0/.
+  Callback method for CommandMotorSpeed messages
+  Moves the rover model according to motor speed values
 */
 void ArdupilotSitlGazeboPlugin::OnVelMsg(const mav_msgs::CommandMotorSpeed msg)
 {   
